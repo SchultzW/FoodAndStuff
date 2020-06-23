@@ -1,0 +1,24 @@
+can create db at localhost/phpmyadmin
+
+database needs to be updated in .env file (name, username, etc)
+
+migrate db >php artisan migrate
+
+can interact with db using tinker >php artisan tinker
+>>> is my input
+    >>> App\Post::count()
+    => 0
+    >>> $post=new App\Post();
+    => App\Post {#3915}
+    >>> $post->title='first post'
+    => "first post"
+    >>> $post->body='this is a post body'
+    => "this is a post body"
+    >>> $post->save();
+    => true
+    >>>
+
+
+can use artisan to make controllers in terminal" php artisan make:contoller ContollersNameHere" add --resource to create crud func
+
+can create a model and migration in terminal >php artisan make:model Post -m

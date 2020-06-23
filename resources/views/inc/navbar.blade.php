@@ -14,6 +14,8 @@
             <li class="nav-item">
                 <a class="nav-link disabled" href="/services" tabindex="-1" aria-disabled="true">Services</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/Submit">Submit a Recipe</a>
         </ul>
     </div>
 </nav>
