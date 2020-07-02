@@ -7,6 +7,15 @@ use App\Post;
 class PostController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth',['except'=>['index','show']]);
+    }
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -29,6 +38,7 @@ class PostController extends Controller
     public function create()
     {
         //
+        return view('posts.create');
     }
 
     /**
@@ -39,7 +49,17 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'title'=>'required',
+            'body'=>'required'
+        ]);
+        //create the post
+        $post=new Post;
+        $post->title=$request->input('title');//gets what ever is in title field from req
+        $post->body=$request->input('body');
+        $post->user_id=auth()->user()->id;
+        $post->save();
+        return redirect('/posts')->with('sucess','Post Created');
     }
 
     /**
@@ -64,7 +84,14 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+
+        $post =Post::find($id);
+        //check for correct user
+        if(auth()->user()-id!==$post-user_id)
+        {
+            return redirect('/posts')-with('error','unathorized page');
+        }
+        return view('posts.edit')->with('post',$post);
     }
 
     /**
@@ -76,7 +103,16 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'title'=>'required',
+            'body'=>'required'
+        ]);
+        //create the post
+        $post=Post::find($id);
+        $post->title=$request->input('title');//gets what ever is in title field from req
+        $post->body=$request->input('body');
+        $post->save();
+        return redirect('/posts')->with('sucess','Post Updated');
     }
 
     /**
@@ -87,6 +123,12 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post=Post::find($id);
+        if(auth()->user()-id!==$post-user_id)
+        {
+            return redirect('/posts')-with('error','unathorized page');
+        }
+        $post->delete();
+        return redirect('/posts')->with('sucess','Post Removed');
     }
 }
